@@ -19,7 +19,7 @@ class UniversalWindowMonitor: ObservableObject {
     private var monitoringTimer: Timer?
     private var isMonitoring = false
     private let refreshInterval: TimeInterval = Constants.WindowMonitoring.refreshInterval
-    private let registryService = ApplicationRegistryService.shared
+    private weak var registryService: ApplicationRegistryService?
     
     init() {
         setupNotifications()
@@ -57,21 +57,21 @@ class UniversalWindowMonitor: ObservableObject {
     }
     
     func enableApplication(_ bundleID: String) {
-        registryService.enableApplication(bundleID)
+        registryService?.enableApplication(bundleID)
         refreshWindowList()
     }
     
     func disableApplication(_ bundleID: String) {
-        registryService.disableApplication(bundleID)
+        registryService?.disableApplication(bundleID)
         refreshWindowList()
     }
     
     func isApplicationEnabled(_ bundleID: String) -> Bool {
-        return registryService.isApplicationEnabled(bundleID)
+        return registryService?.isApplicationEnabled(bundleID) ?? false
     }
     
     var enabledApplications: Set<String> {
-        return registryService.enabledApplications
+        return registryService?.enabledApplications ?? []
     }
     
     // MARK: - Window Detection
@@ -252,10 +252,11 @@ class UniversalWindowMonitor: ObservableObject {
     // MARK: - Registry Service Integration
     
     private func setupRegistryServiceIntegration() {
-        registryService.delegate = self
+        registryService = ApplicationRegistryService.shared
+        registryService?.delegate = self
         
         // Discover and register currently running applications
-        registryService.discoverAndRegisterApplications()
+        registryService?.discoverAndRegisterApplications()
     }
 }
 

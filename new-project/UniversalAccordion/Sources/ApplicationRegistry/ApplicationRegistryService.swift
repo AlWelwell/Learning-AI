@@ -16,8 +16,10 @@ class ApplicationRegistryService: ObservableObject {
     @Published private(set) var enabledApplications: Set<String> = []
     
     private let userDefaults = UserDefaults.standard
-    private let profilesKey = Constants.UserDefaults.profilesKey
-    private let enabledAppsKey = Constants.UserDefaults.enabledApplicationsKey
+    private let profilesKey = Constants.UserDefaultsKeys.profilesKey
+    private let enabledAppsKey = Constants.UserDefaultsKeys.enabledApplicationsKey
+    private let queue = DispatchQueue(label: "com.universalaccordion.registry", qos: .userInitiated)
+    private let mainQueue = DispatchQueue.main
     
     private init() {
         loadProfiles()
@@ -40,25 +42,44 @@ class ApplicationRegistryService: ObservableObject {
     }
     
     func addProfile(_ profile: AppProfile) {
-        profiles[profile.bundleIdentifier] = profile
-        saveProfiles()
-        delegate?.registryService(self, didUpdateProfile: profile)
+        queue.async { [weak self] in
+            guard let self = self else { return }
+            
+            self.mainQueue.async {
+                self.profiles[profile.bundleIdentifier] = profile
+            }
+            
+            self.saveProfiles()
+            
+            self.mainQueue.async {
+                self.delegate?.registryService(self, didUpdateProfile: profile)
+            }
+        }
     }
     
     func updateProfile(_ profile: AppProfile) {
-        profiles[profile.bundleIdentifier] = profile
-        saveProfiles()
-        
-        // Update enabled applications set if profile enabled state changed
-        if profile.isEnabled {
-            enabledApplications.insert(profile.bundleIdentifier)
-        } else {
-            enabledApplications.remove(profile.bundleIdentifier)
+        queue.async { [weak self] in
+            guard let self = self else { return }
+            
+            self.mainQueue.async {
+                self.profiles[profile.bundleIdentifier] = profile
+                
+                // Update enabled applications set if profile enabled state changed
+                if profile.isEnabled {
+                    self.enabledApplications.insert(profile.bundleIdentifier)
+                } else {
+                    self.enabledApplications.remove(profile.bundleIdentifier)
+                }
+            }
+            
+            self.saveProfiles()
+            self.saveEnabledApplications()
+            
+            self.mainQueue.async {
+                self.delegate?.registryService(self, didUpdateProfile: profile)
+                self.delegate?.registryService(self, didUpdateEnabledApplications: self.enabledApplications)
+            }
         }
-        saveEnabledApplications()
-        
-        delegate?.registryService(self, didUpdateProfile: profile)
-        delegate?.registryService(self, didUpdateEnabledApplications: enabledApplications)
     }
     
     func removeProfile(bundleIdentifier: String) {
@@ -90,49 +111,67 @@ class ApplicationRegistryService: ObservableObject {
     // MARK: - Application Enable/Disable
     
     func enableApplication(_ bundleIdentifier: String) {
-        enabledApplications.insert(bundleIdentifier)
-        
-        // Update or create profile
-        if var profile = profiles[bundleIdentifier] {
-            let updatedProfile = AppProfile(
-                bundleIdentifier: profile.bundleIdentifier,
-                displayName: profile.displayName,
-                accentColorHex: profile.accentColorHex,
-                customShortcuts: profile.customShortcuts,
-                windowBehavior: profile.windowBehavior,
-                showPreviews: profile.showPreviews,
-                isEnabled: true,
-                priority: profile.priority
-            )
-            profiles[bundleIdentifier] = updatedProfile
+        queue.async { [weak self] in
+            guard let self = self else { return }
+            
+            self.mainQueue.async {
+                self.enabledApplications.insert(bundleIdentifier)
+                
+                // Update or create profile
+                if let profile = self.profiles[bundleIdentifier] {
+                    let updatedProfile = AppProfile(
+                        bundleIdentifier: profile.bundleIdentifier,
+                        displayName: profile.displayName,
+                        accentColorHex: profile.accentColorHex,
+                        customShortcuts: profile.customShortcuts,
+                        windowBehavior: profile.windowBehavior,
+                        showPreviews: profile.showPreviews,
+                        isEnabled: true,
+                        priority: profile.priority
+                    )
+                    self.profiles[bundleIdentifier] = updatedProfile
+                }
+            }
+            
+            self.saveEnabledApplications()
+            self.saveProfiles()
+            
+            self.mainQueue.async {
+                self.delegate?.registryService(self, didUpdateEnabledApplications: self.enabledApplications)
+            }
         }
-        
-        saveEnabledApplications()
-        saveProfiles()
-        delegate?.registryService(self, didUpdateEnabledApplications: enabledApplications)
     }
     
     func disableApplication(_ bundleIdentifier: String) {
-        enabledApplications.remove(bundleIdentifier)
-        
-        // Update profile if it exists
-        if var profile = profiles[bundleIdentifier] {
-            let updatedProfile = AppProfile(
-                bundleIdentifier: profile.bundleIdentifier,
-                displayName: profile.displayName,
-                accentColorHex: profile.accentColorHex,
-                customShortcuts: profile.customShortcuts,
-                windowBehavior: profile.windowBehavior,
-                showPreviews: profile.showPreviews,
-                isEnabled: false,
-                priority: profile.priority
-            )
-            profiles[bundleIdentifier] = updatedProfile
+        queue.async { [weak self] in
+            guard let self = self else { return }
+            
+            self.mainQueue.async {
+                self.enabledApplications.remove(bundleIdentifier)
+                
+                // Update profile if it exists
+                if let profile = self.profiles[bundleIdentifier] {
+                    let updatedProfile = AppProfile(
+                        bundleIdentifier: profile.bundleIdentifier,
+                        displayName: profile.displayName,
+                        accentColorHex: profile.accentColorHex,
+                        customShortcuts: profile.customShortcuts,
+                        windowBehavior: profile.windowBehavior,
+                        showPreviews: profile.showPreviews,
+                        isEnabled: false,
+                        priority: profile.priority
+                    )
+                    self.profiles[bundleIdentifier] = updatedProfile
+                }
+            }
+            
+            self.saveEnabledApplications()
+            self.saveProfiles()
+            
+            self.mainQueue.async {
+                self.delegate?.registryService(self, didUpdateEnabledApplications: self.enabledApplications)
+            }
         }
-        
-        saveEnabledApplications()
-        saveProfiles()
-        delegate?.registryService(self, didUpdateEnabledApplications: enabledApplications)
     }
     
     func isApplicationEnabled(_ bundleIdentifier: String) -> Bool {
@@ -203,18 +242,32 @@ class ApplicationRegistryService: ObservableObject {
     // MARK: - Persistence
     
     private func loadProfiles() {
-        guard let data = userDefaults.data(forKey: profilesKey),
-              let decoded = try? JSONDecoder().decode([String: AppProfile].self, from: data) else {
+        guard let data = userDefaults.data(forKey: profilesKey) else {
+            print("No saved profiles found")
             return
         }
-        profiles = decoded
+        
+        do {
+            let decoded = try JSONDecoder().decode([String: AppProfile].self, from: data)
+            mainQueue.async {
+                self.profiles = decoded
+            }
+            print("Successfully loaded \(decoded.count) profiles")
+        } catch {
+            print("Failed to decode profiles: \(error)")
+            // Clear corrupted data
+            userDefaults.removeObject(forKey: profilesKey)
+        }
     }
     
     private func saveProfiles() {
-        guard let encoded = try? JSONEncoder().encode(profiles) else {
-            return
+        do {
+            let encoded = try JSONEncoder().encode(profiles)
+            userDefaults.set(encoded, forKey: profilesKey)
+            print("Successfully saved \(profiles.count) profiles")
+        } catch {
+            print("Failed to encode profiles: \(error)")
         }
-        userDefaults.set(encoded, forKey: profilesKey)
     }
     
     private func loadEnabledApplications() {

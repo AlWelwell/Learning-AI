@@ -106,7 +106,7 @@ struct Constants {
     
     // MARK: - User Defaults Keys
     
-    struct UserDefaults {
+    struct UserDefaultsKeys {
         static let enabledApplicationsKey = "enabledApplications"
         static let profilesKey = "applicationProfiles"
         static let windowMonitoringInterval = "windowMonitoringInterval"

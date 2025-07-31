@@ -142,8 +142,9 @@ struct WindowDetailView: View {
     // MARK: - Actions
     
     private func focusWindow() {
-        if let runningApp = NSRunningApplication(processIdentifier: window.ownerPID) {
-            runningApp.activate(options: [.activateIgnoringOtherApps])
+        let success = WindowFocusManager.shared.focusWindow(window)
+        if !success {
+            print("Failed to focus window: \(window.title)")
         }
     }
     

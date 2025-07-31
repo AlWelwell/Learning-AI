@@ -26,6 +26,7 @@
 		2A1234567890123456789049 /* ApplicationRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A1234567890123456789048 /* ApplicationRowView.swift */; };
 		2A1234567890123456789051 /* WindowDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A1234567890123456789050 /* WindowDetailView.swift */; };
 		2A1234567890123456789053 /* AccordionWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A1234567890123456789052 /* AccordionWindowController.swift */; };
+		2A1234567890123456789055 /* WindowFocusManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A1234567890123456789054 /* WindowFocusManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,6 +50,7 @@
 		2A1234567890123456789048 /* ApplicationRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationRowView.swift; sourceTree = "<group>"; };
 		2A1234567890123456789050 /* WindowDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowDetailView.swift; sourceTree = "<group>"; };
 		2A1234567890123456789052 /* AccordionWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccordionWindowController.swift; sourceTree = "<group>"; };
+		2A1234567890123456789054 /* WindowFocusManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowFocusManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -143,6 +145,7 @@
 				2A1234567890123456789029 /* UniversalWindowMonitor.swift */,
 				2A1234567890123456789031 /* WindowController.swift */,
 				2A1234567890123456789033 /* ApplicationDetector.swift */,
+				2A1234567890123456789054 /* WindowFocusManager.swift */,
 			);
 			path = WindowManagement;
 			sourceTree = "<group>";
@@ -255,6 +258,7 @@
 				2A1234567890123456789049 /* ApplicationRowView.swift in Sources */,
 				2A1234567890123456789051 /* WindowDetailView.swift in Sources */,
 				2A1234567890123456789053 /* AccordionWindowController.swift in Sources */,
+				2A1234567890123456789055 /* WindowFocusManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

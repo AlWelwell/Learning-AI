@@ -184,19 +184,11 @@ struct AccordionView: View {
     // MARK: - Actions
     
     private func focusWindow(_ window: DocumentWindow) {
-        // Focus the window using Accessibility API
-        let windowID = window.windowID
-        
-        // First, activate the application
-        if let runningApp = NSRunningApplication(processIdentifier: window.ownerPID) {
-            runningApp.activate(options: [.activateIgnoringOtherApps])
-        }
-        
-        // Then try to focus the specific window
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            // This would require more advanced window management
-            // For now, just activating the application
-            print("Focused window: \(window.title) in \(window.application.displayName)")
+        let success = WindowFocusManager.shared.focusWindow(window)
+        if success {
+            print("Successfully focused window: \(window.title) in \(window.application.displayName)")
+        } else {
+            print("Failed to focus window: \(window.title) in \(window.application.displayName)")
         }
     }
 }

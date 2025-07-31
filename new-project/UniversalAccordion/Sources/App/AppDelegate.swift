@@ -37,18 +37,33 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     private func requestAccessibilityPermissions() {
-        let options = [kAXTrustedCheckOptionPrompt.takeUnretainedValue() as String: true]
+        checkAccessibilityPermissions(showPrompt: true)
+    }
+    
+    private func checkAccessibilityPermissions(showPrompt: Bool) {
+        let options = showPrompt ? [kAXTrustedCheckOptionPrompt.takeUnretainedValue() as String: true] : [:]
         let accessEnabled = AXIsProcessTrustedWithOptions(options as CFDictionary)
         
         if !accessEnabled {
             DebugConsole.printAccessibilityPermissionRequired()
-            showAccessibilityAlert()
-        } else {
-            // Start monitoring after a short delay to ensure setup is complete
-            DebugConsole.printAccessibilityPermissionGranted()
-            DispatchQueue.main.asyncAfter(deadline: .now() + Constants.WindowMonitoring.delayBeforeStartingMonitoring) {
-                self.windowMonitor?.startMonitoring()
+            if showPrompt {
+                showAccessibilityAlert()
+            } else {
+                // Schedule a recheck in 5 seconds
+                DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
+                    self.checkAccessibilityPermissions(showPrompt: false)
+                }
             }
+        } else {
+            DebugConsole.printAccessibilityPermissionGranted()
+            startWindowMonitoringWithDelay()
+        }
+    }
+    
+    private func startWindowMonitoringWithDelay() {
+        // Start monitoring after a short delay to ensure setup is complete
+        DispatchQueue.main.asyncAfter(deadline: .now() + Constants.WindowMonitoring.delayBeforeStartingMonitoring) {
+            self.windowMonitor?.startMonitoring()
         }
     }
     
@@ -58,11 +73,30 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         alert.informativeText = "Universal Window Accordion needs accessibility permissions to detect and manage windows from other applications. Please grant permission in System Preferences > Privacy & Security > Accessibility."
         alert.alertStyle = .warning
         alert.addButton(withTitle: "Open System Preferences")
+        alert.addButton(withTitle: "Retry")
         alert.addButton(withTitle: "Cancel")
         
         let response = alert.runModal()
-        if response == .alertFirstButtonReturn {
-            NSWorkspace.shared.open(URL(string: Constants.SystemPreferences.accessibilityPrivacy)!)
+        switch response {
+        case .alertFirstButtonReturn:
+            // Open System Preferences
+            if let url = URL(string: Constants.SystemPreferences.accessibilityPrivacy) {
+                NSWorkspace.shared.open(url)
+            }
+            // Continue checking in the background
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                self.checkAccessibilityPermissions(showPrompt: false)
+            }
+            
+        case .alertSecondButtonReturn:
+            // Retry immediately
+            checkAccessibilityPermissions(showPrompt: false)
+            
+        default:
+            // Cancel - show a less intrusive reminder later
+            DispatchQueue.main.asyncAfter(deadline: .now() + 30.0) {
+                self.checkAccessibilityPermissions(showPrompt: false)
+            }
         }
     }
 }

@@ -34,7 +34,7 @@ enum WindowBehavior: String, Codable, CaseIterable {
 }
 
 struct AppProfile: Identifiable, Codable {
-    let id = UUID()
+    var id: String { bundleIdentifier }
     let bundleIdentifier: String
     let displayName: String
     let accentColorHex: String

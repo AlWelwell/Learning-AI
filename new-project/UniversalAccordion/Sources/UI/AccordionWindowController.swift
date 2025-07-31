@@ -3,7 +3,7 @@ import SwiftUI
 
 class AccordionWindowController: NSWindowController {
     
-    private var windowMonitor: UniversalWindowMonitor
+    private weak var windowMonitor: UniversalWindowMonitor?
     
     init(windowMonitor: UniversalWindowMonitor) {
         self.windowMonitor = windowMonitor
@@ -50,10 +50,10 @@ class AccordionWindowController: NSWindowController {
     }
     
     private func setupContent() {
-        guard let window = window else { return }
+        guard let window = window, let monitor = windowMonitor else { return }
         
         // Create the SwiftUI view
-        let accordionView = AccordionView(windowMonitor: windowMonitor)
+        let accordionView = AccordionView(windowMonitor: monitor)
         
         // Wrap in hosting view
         let hostingView = NSHostingView(rootView: accordionView)
