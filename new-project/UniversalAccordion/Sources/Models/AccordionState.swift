@@ -26,7 +26,7 @@ struct AccordionState {
     var expandedWorkspaces: Set<String> = []
     var selectedWindowID: CGWindowID?
     var isVisible: Bool = false
-    var animationDuration: Double = 0.3
+    var animationDuration: Double = Constants.UI.animationDuration
     var autoCollapseOthers: Bool = true
     
     mutating func toggleApplication(_ bundleID: String) {

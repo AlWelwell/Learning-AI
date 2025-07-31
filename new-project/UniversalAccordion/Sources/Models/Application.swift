@@ -2,19 +2,19 @@ import Foundation
 import AppKit
 
 struct Application: Identifiable, Equatable, Hashable {
-    let id = UUID()
+    // Use bundle identifier as stable ID instead of random UUID
+    var id: String { bundleIdentifier }
+    
     let bundleIdentifier: String
     let displayName: String
     let icon: NSImage?
     let processID: pid_t
-    let isEnabled: Bool
     
-    init(bundleIdentifier: String, displayName: String, icon: NSImage? = nil, processID: pid_t, isEnabled: Bool = true) {
+    init(bundleIdentifier: String, displayName: String, icon: NSImage? = nil, processID: pid_t) {
         self.bundleIdentifier = bundleIdentifier
         self.displayName = displayName
         self.icon = icon
         self.processID = processID
-        self.isEnabled = isEnabled
     }
     
     static func == (lhs: Application, rhs: Application) -> Bool {
@@ -32,7 +32,6 @@ extension Application {
         bundleIdentifier: "unknown",
         displayName: "Unknown Application",
         icon: nil,
-        processID: -1,
-        isEnabled: false
+        processID: -1
     )
 }

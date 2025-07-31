@@ -14,6 +14,13 @@
 		2A1234567890123456789022 /* AccordionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A1234567890123456789021 /* AccordionState.swift */; };
 		2A1234567890123456789024 /* WorkspaceConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A1234567890123456789023 /* WorkspaceConfiguration.swift */; };
 		2A1234567890123456789026 /* AppProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A1234567890123456789025 /* AppProfile.swift */; };
+		2A1234567890123456789030 /* UniversalWindowMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A1234567890123456789029 /* UniversalWindowMonitor.swift */; };
+		2A1234567890123456789032 /* WindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A1234567890123456789031 /* WindowController.swift */; };
+		2A1234567890123456789034 /* ApplicationDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A1234567890123456789033 /* ApplicationDetector.swift */; };
+		2A1234567890123456789036 /* MenuBarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A1234567890123456789035 /* MenuBarManager.swift */; };
+		2A1234567890123456789038 /* DebugConsole.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A1234567890123456789037 /* DebugConsole.swift */; };
+		2A1234567890123456789041 /* ApplicationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A1234567890123456789040 /* ApplicationState.swift */; };
+		2A1234567890123456789043 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A1234567890123456789042 /* Constants.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,6 +32,13 @@
 		2A1234567890123456789021 /* AccordionState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccordionState.swift; sourceTree = "<group>"; };
 		2A1234567890123456789023 /* WorkspaceConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceConfiguration.swift; sourceTree = "<group>"; };
 		2A1234567890123456789025 /* AppProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppProfile.swift; sourceTree = "<group>"; };
+		2A1234567890123456789029 /* UniversalWindowMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniversalWindowMonitor.swift; sourceTree = "<group>"; };
+		2A1234567890123456789031 /* WindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowController.swift; sourceTree = "<group>"; };
+		2A1234567890123456789033 /* ApplicationDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationDetector.swift; sourceTree = "<group>"; };
+		2A1234567890123456789035 /* MenuBarManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarManager.swift; sourceTree = "<group>"; };
+		2A1234567890123456789037 /* DebugConsole.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugConsole.swift; sourceTree = "<group>"; };
+		2A1234567890123456789040 /* ApplicationState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationState.swift; sourceTree = "<group>"; };
+		2A1234567890123456789042 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,6 +83,9 @@
 				2A1234567890123456789017 /* App */,
 				2A1234567890123456789027 /* Models */,
 				2A1234567890123456789028 /* ApplicationRegistry */,
+				2A1234567890123456789039 /* WindowManagement */,
+				2A1234567890123456789040 /* UI */,
+				2A1234567890123456789044 /* Configuration */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -93,6 +110,7 @@
 			isa = PBXGroup;
 			children = (
 				2A1234567890123456789017 /* Application.swift */,
+				2A1234567890123456789040 /* ApplicationState.swift */,
 				2A1234567890123456789019 /* DocumentWindow.swift */,
 				2A1234567890123456789021 /* AccordionState.swift */,
 				2A1234567890123456789023 /* WorkspaceConfiguration.swift */,
@@ -106,6 +124,33 @@
 				2A1234567890123456789025 /* AppProfile.swift */,
 			);
 			path = ApplicationRegistry;
+			sourceTree = "<group>";
+		};
+		2A1234567890123456789039 /* WindowManagement */ = {
+			isa = PBXGroup;
+			children = (
+				2A1234567890123456789029 /* UniversalWindowMonitor.swift */,
+				2A1234567890123456789031 /* WindowController.swift */,
+				2A1234567890123456789033 /* ApplicationDetector.swift */,
+			);
+			path = WindowManagement;
+			sourceTree = "<group>";
+		};
+		2A1234567890123456789040 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				2A1234567890123456789035 /* MenuBarManager.swift */,
+				2A1234567890123456789037 /* DebugConsole.swift */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		2A1234567890123456789044 /* Configuration */ = {
+			isa = PBXGroup;
+			children = (
+				2A1234567890123456789042 /* Constants.swift */,
+			);
+			path = Configuration;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -183,6 +228,13 @@
 				2A1234567890123456789022 /* AccordionState.swift in Sources */,
 				2A1234567890123456789024 /* WorkspaceConfiguration.swift in Sources */,
 				2A1234567890123456789026 /* AppProfile.swift in Sources */,
+				2A1234567890123456789030 /* UniversalWindowMonitor.swift in Sources */,
+				2A1234567890123456789032 /* WindowController.swift in Sources */,
+				2A1234567890123456789034 /* ApplicationDetector.swift in Sources */,
+				2A1234567890123456789036 /* MenuBarManager.swift in Sources */,
+				2A1234567890123456789038 /* DebugConsole.swift in Sources */,
+				2A1234567890123456789041 /* ApplicationState.swift in Sources */,
+				2A1234567890123456789043 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

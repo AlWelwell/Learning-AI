@@ -16,7 +16,7 @@ A macOS application that organizes windows from all applications in an accordion
 - [x] App delegate with menu bar integration
 - [x] Accessibility permissions handling
 - [x] Core data models
-- [ ] Window detection system
+- [x] Window detection system
 - [ ] Application registry
 - [ ] Accordion UI
 - [ ] Window management
@@ -46,9 +46,9 @@ The app follows a modular architecture with clear separation of concerns:
 
 ## Current Step
 
-**Step 2 Complete**: Core data models implemented including:
-- `Application`: Represents detected applications with metadata
-- `DocumentWindow`: Window information with focus/activation capabilities  
-- `AccordionState`: UI state management for grouping and expansion
-- `WorkspaceConfiguration`: Workspace and grouping configurations
-- `AppProfile`: Per-app customization settings with default profiles
+**Step 3 Complete**: Window detection system implemented with:
+- `UniversalWindowMonitor`: Real-time window detection across all applications using CGWindowList API
+- `WindowController`: Window management (focus, minimize, close, move, resize) via Accessibility API
+- `ApplicationDetector`: Application discovery from system directories and running processes
+- Enhanced AppDelegate with debug menu for testing window detection
+- Automatic accessibility permission handling with user-friendly alerts
