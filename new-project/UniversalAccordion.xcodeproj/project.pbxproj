@@ -9,12 +9,22 @@
 /* Begin PBXBuildFile section */
 		2A1234567890123456789012 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A1234567890123456789011 /* AppDelegate.swift */; };
 		2A1234567890123456789014 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2A1234567890123456789013 /* Info.plist */; };
+		2A1234567890123456789018 /* Application.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A1234567890123456789017 /* Application.swift */; };
+		2A1234567890123456789020 /* DocumentWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A1234567890123456789019 /* DocumentWindow.swift */; };
+		2A1234567890123456789022 /* AccordionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A1234567890123456789021 /* AccordionState.swift */; };
+		2A1234567890123456789024 /* WorkspaceConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A1234567890123456789023 /* WorkspaceConfiguration.swift */; };
+		2A1234567890123456789026 /* AppProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A1234567890123456789025 /* AppProfile.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		2A1234567890123456789010 /* UniversalAccordion.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UniversalAccordion.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2A1234567890123456789011 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2A1234567890123456789013 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2A1234567890123456789017 /* Application.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Application.swift; sourceTree = "<group>"; };
+		2A1234567890123456789019 /* DocumentWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentWindow.swift; sourceTree = "<group>"; };
+		2A1234567890123456789021 /* AccordionState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccordionState.swift; sourceTree = "<group>"; };
+		2A1234567890123456789023 /* WorkspaceConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceConfiguration.swift; sourceTree = "<group>"; };
+		2A1234567890123456789025 /* AppProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppProfile.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,6 +67,8 @@
 			isa = PBXGroup;
 			children = (
 				2A1234567890123456789017 /* App */,
+				2A1234567890123456789027 /* Models */,
+				2A1234567890123456789028 /* ApplicationRegistry */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -75,6 +87,25 @@
 				2A1234567890123456789011 /* AppDelegate.swift */,
 			);
 			path = App;
+			sourceTree = "<group>";
+		};
+		2A1234567890123456789027 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				2A1234567890123456789017 /* Application.swift */,
+				2A1234567890123456789019 /* DocumentWindow.swift */,
+				2A1234567890123456789021 /* AccordionState.swift */,
+				2A1234567890123456789023 /* WorkspaceConfiguration.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		2A1234567890123456789028 /* ApplicationRegistry */ = {
+			isa = PBXGroup;
+			children = (
+				2A1234567890123456789025 /* AppProfile.swift */,
+			);
+			path = ApplicationRegistry;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -147,6 +178,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				2A1234567890123456789012 /* AppDelegate.swift in Sources */,
+				2A1234567890123456789018 /* Application.swift in Sources */,
+				2A1234567890123456789020 /* DocumentWindow.swift in Sources */,
+				2A1234567890123456789022 /* AccordionState.swift in Sources */,
+				2A1234567890123456789024 /* WorkspaceConfiguration.swift in Sources */,
+				2A1234567890123456789026 /* AppProfile.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
