@@ -5,6 +5,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     private var menuBarManager: MenuBarManager?
     private var windowMonitor: UniversalWindowMonitor?
+    private var accordionWindowController: AccordionWindowController?
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         setupMenuBar()
@@ -28,6 +29,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private func setupWindowMonitoring() {
         windowMonitor = UniversalWindowMonitor()
         windowMonitor?.delegate = self
+        
+        // Create accordion window controller
+        if let monitor = windowMonitor {
+            accordionWindowController = AccordionWindowController(windowMonitor: monitor)
+        }
     }
     
     private func requestAccessibilityPermissions() {
@@ -65,10 +71,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
 extension AppDelegate: MenuBarManagerDelegate {
     func menuBarManager(_ manager: MenuBarManager, didRequestShowAccordion: Void) {
-        // TODO: Show accordion interface
-        let windowCount = windowMonitor?.detectedWindows.count ?? 0
-        let appCount = windowMonitor?.detectedApplications.count ?? 0
-        DebugConsole.printWindowMonitorStatus(windowCount: windowCount, appCount: appCount)
+        accordionWindowController?.showWindow()
     }
     
     func menuBarManager(_ manager: MenuBarManager, didRequestStartMonitoring: Void) {
