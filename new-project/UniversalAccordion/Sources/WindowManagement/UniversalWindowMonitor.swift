@@ -19,9 +19,11 @@ class UniversalWindowMonitor: ObservableObject {
     private var monitoringTimer: Timer?
     private var isMonitoring = false
     private let refreshInterval: TimeInterval = Constants.WindowMonitoring.refreshInterval
+    private let registryService = ApplicationRegistryService.shared
     
     init() {
         setupNotifications()
+        setupRegistryServiceIntegration()
     }
     
     deinit {
@@ -55,27 +57,21 @@ class UniversalWindowMonitor: ObservableObject {
     }
     
     func enableApplication(_ bundleID: String) {
-        if applicationStates[bundleID] == nil {
-            applicationStates[bundleID] = ApplicationState(bundleIdentifier: bundleID, isEnabled: true)
-        } else {
-            applicationStates[bundleID]?.isEnabled = true
-        }
+        registryService.enableApplication(bundleID)
         refreshWindowList()
     }
     
     func disableApplication(_ bundleID: String) {
-        applicationStates[bundleID]?.isEnabled = false
+        registryService.disableApplication(bundleID)
         refreshWindowList()
     }
     
     func isApplicationEnabled(_ bundleID: String) -> Bool {
-        return applicationStates[bundleID]?.isEnabled ?? false
+        return registryService.isApplicationEnabled(bundleID)
     }
     
     var enabledApplications: Set<String> {
-        return Set(applicationStates.compactMap { key, state in
-            state.isEnabled ? key : nil
-        })
+        return registryService.enabledApplications
     }
     
     // MARK: - Window Detection
@@ -248,6 +244,57 @@ class UniversalWindowMonitor: ObservableObject {
     }
     
     @objc private func applicationDidActivate(_ notification: Notification) {
+        if isMonitoring {
+            refreshWindowList()
+        }
+    }
+    
+    // MARK: - Registry Service Integration
+    
+    private func setupRegistryServiceIntegration() {
+        registryService.delegate = self
+        
+        // Discover and register currently running applications
+        registryService.discoverAndRegisterApplications()
+    }
+}
+
+// MARK: - ApplicationRegistryServiceDelegate
+
+extension UniversalWindowMonitor: ApplicationRegistryServiceDelegate {
+    func registryService(_ service: ApplicationRegistryService, didUpdateProfile profile: AppProfile) {
+        // Refresh windows when profile is updated
+        if isMonitoring {
+            refreshWindowList()
+        }
+    }
+    
+    func registryService(_ service: ApplicationRegistryService, didRemoveProfile bundleIdentifier: String) {
+        // Remove from application states
+        applicationStates.removeValue(forKey: bundleIdentifier)
+        
+        if isMonitoring {
+            refreshWindowList()
+        }
+    }
+    
+    func registryService(_ service: ApplicationRegistryService, didUpdateEnabledApplications applications: Set<String>) {
+        // Update local application states
+        for bundleIdentifier in applications {
+            if applicationStates[bundleIdentifier] == nil {
+                applicationStates[bundleIdentifier] = ApplicationState(bundleIdentifier: bundleIdentifier, isEnabled: true)
+            } else {
+                applicationStates[bundleIdentifier]?.isEnabled = true
+            }
+        }
+        
+        // Disable applications not in the enabled set
+        for (bundleIdentifier, _) in applicationStates {
+            if !applications.contains(bundleIdentifier) {
+                applicationStates[bundleIdentifier]?.isEnabled = false
+            }
+        }
+        
         if isMonitoring {
             refreshWindowList()
         }

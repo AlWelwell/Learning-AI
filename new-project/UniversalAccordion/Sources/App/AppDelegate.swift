@@ -28,11 +28,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private func setupWindowMonitoring() {
         windowMonitor = UniversalWindowMonitor()
         windowMonitor?.delegate = self
-        
-        // Enable some popular applications by default for testing
-        for bundleID in Constants.DefaultApplications.enabled {
-            windowMonitor?.enableApplication(bundleID)
-        }
     }
     
     private func requestAccessibilityPermissions() {

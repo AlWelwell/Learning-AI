@@ -86,6 +86,7 @@ struct Constants {
         static let menuBarTitle = "🪗"
         static let menuBarToolTip = "Universal Window Accordion"
         static let animationDuration: Double = 0.3
+        static let defaultAccentColor = "#007AFF"
     }
     
     // MARK: - System Preferences URLs
@@ -105,8 +106,9 @@ struct Constants {
     
     // MARK: - User Defaults Keys
     
-    struct UserDefaultsKeys {
-        static let enabledApplications = "enabledApplications"
+    struct UserDefaults {
+        static let enabledApplicationsKey = "enabledApplications"
+        static let profilesKey = "applicationProfiles"
         static let windowMonitoringInterval = "windowMonitoringInterval"
         static let accordionGroupingMode = "accordionGroupingMode"
         static let autoCollapseOthers = "autoCollapseOthers"

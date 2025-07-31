@@ -21,6 +21,7 @@
 		2A1234567890123456789038 /* DebugConsole.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A1234567890123456789037 /* DebugConsole.swift */; };
 		2A1234567890123456789041 /* ApplicationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A1234567890123456789040 /* ApplicationState.swift */; };
 		2A1234567890123456789043 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A1234567890123456789042 /* Constants.swift */; };
+		2A1234567890123456789045 /* ApplicationRegistryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A1234567890123456789044 /* ApplicationRegistryService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,6 +40,7 @@
 		2A1234567890123456789037 /* DebugConsole.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugConsole.swift; sourceTree = "<group>"; };
 		2A1234567890123456789040 /* ApplicationState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationState.swift; sourceTree = "<group>"; };
 		2A1234567890123456789042 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		2A1234567890123456789044 /* ApplicationRegistryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationRegistryService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,6 +124,7 @@
 			isa = PBXGroup;
 			children = (
 				2A1234567890123456789025 /* AppProfile.swift */,
+				2A1234567890123456789044 /* ApplicationRegistryService.swift */,
 			);
 			path = ApplicationRegistry;
 			sourceTree = "<group>";
@@ -235,6 +238,7 @@
 				2A1234567890123456789038 /* DebugConsole.swift in Sources */,
 				2A1234567890123456789041 /* ApplicationState.swift in Sources */,
 				2A1234567890123456789043 /* Constants.swift in Sources */,
+				2A1234567890123456789045 /* ApplicationRegistryService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
